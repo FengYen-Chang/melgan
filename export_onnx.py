@@ -19,5 +19,10 @@ else:
     melgan.load_state_dict(checkpoint["model_g"])
     melgan.eval(inference=True)
 
-torch.onnx.export(melgan, mel, "melgan.onnx")
+opset_version = 11
+torch.onnx.export(melgan, mel, "melgan.onnx",
+    opset_version=opset_version,
+    do_constant_folding=True,
+    input_names=["mel"],
+    output_names=["mel_output"])
 
