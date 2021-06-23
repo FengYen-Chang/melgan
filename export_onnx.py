@@ -3,6 +3,10 @@ import torch.onnx
 import numpy as np
 from model.generator import Generator
 
+import os
+if not os.path.exists('onnx'):
+    os.mkdir('onnx')
+
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 mel = torch.randn(1, 80, 200)
@@ -20,7 +24,7 @@ else:
     melgan.eval(inference=True)
 
 opset_version = 11
-torch.onnx.export(melgan, mel, "melgan.onnx",
+torch.onnx.export(melgan, mel, "onnx/melgan.onnx",
     opset_version=opset_version,
     do_constant_folding=True,
     input_names=["mel"],
